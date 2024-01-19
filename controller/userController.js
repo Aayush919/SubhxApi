@@ -5,8 +5,8 @@ const ErorrHandler = require("../utills/ErorrHandlers.js");
 const { sendToken } = require("../utills/sendToken.js");
 const { oneMinute, TenMinute } = require("../middlewares/otpValidation.js");
 const { sendMail } = require("../utills/nodeMailer.js");
-const twilio = require('twilio');
-const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+
+
 
 
 
@@ -31,30 +31,6 @@ const signUp = catchAsyncErorrs(async (req, res, next) => {
   sendToken(user, 201, res);
 });
 
-// const signIn = catchAsyncErorrs(async (req, res, next) => {
-//   const { password } = req.body;
-//   const user = await User.findOne({ email: req.body.email }).select("+password").exec();
-//   if (!user) {
-//     return next(new ErorrHandler("user not found whith this email adresss.", 404))
-//   }
-//   const isMatch = user.comparepassword(password);
-//   if (!isMatch) {
-//     return next(new ErorrHandler("wrong credntials", 500))
-//   }
-//   sendToken(user, 200, res);
-// })
-
-
-// signOut
-// const signOut = catchAsyncErorrs(async (req, res, next) => {
-//   res.clearCookie("token");
-//   res.json({ message: "Successfully Signout!" })
-// })
-
-// const currentUser = catchAsyncErorrs(async (req, res, next) => {
-//   const user = await User.findById(req.id).exec();
-//   res.json({ user })
-// })
 
 
 
@@ -102,19 +78,7 @@ const send = catchAsyncErorrs(async (req, res, next) => {
     return next(new ErorrHandler("Error whith sending otp..", 500));
   }
 
-  //i have also make the twillio phone otp but they block my account that comment it..
-  // client.verify.v2.services(process.env.TWILIO_SERVICE_SID)
-  // .verifications
-  // .create({ to:'+917694869561', channel: 'sms' })
-  // .then(verification => {
-  //     console.log('Phone Verification SID:', verification.sid);
-  //     res.status(200).json({ message: 'OTP sent successfully.' });
-  // })
-  // .catch(error => {
-  //     console.error('Error sending Phone OTP:', error);
 
-  //     next(new ErrorHandler('Failed to send Phone OTP', 500));
-  // });
 
 
 
@@ -149,31 +113,7 @@ const verifyOtp = catchAsyncErorrs(async (req, res, next) => {
 
 
 
-//twillio verify but they block my account when i was test again and again 
 
-//   const isverifyPhone = await client.verify
-//   .v2.services(process.env.TWILIO_SERVICE_SID) 
-//   .verificationChecks.create({
-//     to: `+91${phoneNo}`,
-//     code: phoneOtp,
-//   })
-//   .then((verifyResponse) => {
-//     if (verifyResponse.status === 'approved') {
-//       return true;
-//     } else {
-//       return false;
-//     }
-//   })
-//   .catch((err) => {
-//     console.error('Error verifying OTP:', err);
-//     return false;
-//   });
-
-// console.log(isverifyPhone);
-
-// if (!isverifyPhone) {
-//   return res.status(400).json({ message: "Invalid OTP!" });
-// }
 
 const updatedUser = await User.findOneAndUpdate(
   { email: email},
